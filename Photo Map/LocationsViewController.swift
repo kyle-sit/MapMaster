@@ -21,6 +21,8 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
     //instance variable to hold given venues
     var results: NSArray = []
     
+    //protocol
+    weak var delegate : LocationsViewControllerDelegate!
     
     //viewDidLoad setting delegates and sources
     override func viewDidLoad() {
@@ -55,18 +57,18 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
     }
 
     
-    //prints lat and long for me to compare in terminal
+    //sets lat and long for me to pass back
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // This is the selected venue
         let venue = results[(indexPath as NSIndexPath).row] as! NSDictionary
 
         let lat = venue.value(forKeyPath: "location.lat") as! NSNumber
         let lng = venue.value(forKeyPath: "location.lng") as! NSNumber
-
-        let latString = "\(lat)"
-        let lngString = "\(lng)"
-
-        print(latString + " " + lngString)
+        
+        delegate.locationsPickedLocation(controller: self, latitude: lat, longitude: lng)
+        
+        // Return to the PhotoMapViewController
+        navigationController?.popViewController(animated: true)
     }
     
     
@@ -114,4 +116,9 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
         task.resume()
     }
 
+}
+
+// Protocol definition to communicate back to photomap viewcontroller
+protocol LocationsViewControllerDelegate : class {
+    func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber)
 }
