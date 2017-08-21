@@ -2,8 +2,8 @@
 //  FullImageViewController.swift
 //  Photo Map
 //
-//  Created by Nicholas Aiwazian on 10/15/15.
-//  Copyright © 2015 Timothy Lee. All rights reserved.
+//  Created by Kyle Sit on 8/21/17.
+//  Copyright (c) 2017 Kyle Sit. All rights reserved.
 //
 
 import UIKit

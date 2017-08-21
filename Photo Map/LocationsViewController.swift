@@ -2,23 +2,27 @@
 //  LocationsViewController.swift
 //  Photo Map
 //
-//  Created by Timothy Lee on 10/20/14.
-//  Copyright (c) 2014 Timothy Lee. All rights reserved.
+//  Created by Kyle Sit on 8/21/17.
+//  Copyright (c) 2017 Kyle Sit. All rights reserved.
 //
 
 import UIKit
 
 class LocationsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
 
-    // TODO: Fill in actual CLIENT_ID and CLIENT_SECRET
-    let CLIENT_ID = "CLIENT_ID GOES HERE"
-    let CLIENT_SECRET = "CLIENT_SECRET GOES HERE"
+    //CLIENT_ID and CLIENT_SECRET for four square
+    let CLIENT_ID = "QA1L0Z0ZNA2QVEEDHFPQWK0I5F1DE3GPLSNW4BZEBGJXUCFL"
+    let CLIENT_SECRET = "W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH21ZCPUMCU"
 
+    //outlets
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
 
+    //instance variable to hold given venues
     var results: NSArray = []
     
+    
+    //viewDidLoad setting delegates and sources
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -27,15 +31,21 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
         searchBar.delegate = self
     }
 
+    
+    //memory warning
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    
+    //function provinding table count based on returned results
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return results.count
     }
     
+    
+    //function setting location for each cell
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LocationCell") as! LocationCell
         
@@ -44,6 +54,8 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
         return cell
     }
 
+    
+    //prints lat and long for me to compare in terminal
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // This is the selected venue
         let venue = results[(indexPath as NSIndexPath).row] as! NSDictionary
@@ -57,6 +69,8 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
         print(latString + " " + lngString)
     }
     
+    
+    //function implementing searchBar
     func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let newText = NSString(string: searchBar.text!).replacingCharacters(in: range, with: text)
         fetchLocations(newText)
@@ -64,10 +78,14 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
         return true
     }
     
+    
+    //calling fetchLocations on entry
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         fetchLocations(searchBar.text!)
     }
     
+    
+    //Api call to four square in order to retrieve venues
     func fetchLocations(_ query: String, near: String = "San Francisco") {
         let baseUrlString = "https://api.foursquare.com/v2/venues/search?"
         let queryString = "client_id=\(CLIENT_ID)&client_secret=\(CLIENT_SECRET)&v=20141020&near=\(near),CA&query=\(query)"
