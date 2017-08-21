@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Photo Map View Controller-->
+        <!--Photo Map-->
         <scene sceneID="Eh3-Ch-REm">
             <objects>
                 <viewController id="ghP-Ww-KKQ" customClass="PhotoMapViewController" customModule="Photo_Map" customModuleProvider="target" sceneMemberID="viewController">
@@ -32,11 +32,14 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
                                 <state key="normal" title="Button" image="camera"/>
+                                <connections>
+                                    <action selector="choosePhoto:" destination="ghP-Ww-KKQ" eventType="touchUpInside" id="hrB-JO-awB"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" id="aPF-0T-Ydb"/>
+                    <navigationItem key="navigationItem" title="Photo Map" id="aPF-0T-Ydb"/>
                     <connections>
                         <outlet property="mapView" destination="2fd-Ll-jMQ" id="ItI-w1-Sfe"/>
                         <outlet property="photoButton" destination="F9q-ZZ-nDb" id="3w5-0s-i5A"/>
