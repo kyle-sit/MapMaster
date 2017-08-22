@@ -85,6 +85,9 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
 
     //method implementation for protocol
     func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber) {
+        let point = MapPoint(title: "\(latitude)", coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude)))
+        
+        mapView.addAnnotation(point)
     }
     
     
