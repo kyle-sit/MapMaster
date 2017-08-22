@@ -101,6 +101,7 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
         
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseID)
         if (annotationView == nil) {
+            //create the imageview with a white border for preview
             let resizeRenderImageView = UIImageView(frame: CGRect(x:0, y:0, width:45, height:45))
             resizeRenderImageView.layer.borderColor = UIColor.white.cgColor
             resizeRenderImageView.layer.borderWidth = 3.0
@@ -112,9 +113,11 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
             //let thumbnail = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             
+            //attach the imageview to the annotationView
             annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
             annotationView!.canShowCallout = true
             annotationView!.leftCalloutAccessoryView = resizeRenderImageView
+            annotationView!.rightCalloutAccessoryView = UIButton(type: UIButtonType.detailDisclosure)
         }
         
         let imageView = annotationView?.leftCalloutAccessoryView as! UIImageView
