@@ -88,7 +88,8 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
 
     //method implementation for protocol
     func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber) {
-        let point = MapPoint(title: "\(latitude)", coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude)))
+        
+        let point = MapPoint(title: "\(latitude)", photo: pickedImage, coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude)))
         
         mapView.addAnnotation(point)
     }
@@ -100,9 +101,20 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
         
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseID)
         if (annotationView == nil) {
+            let resizeRenderImageView = UIImageView(frame: CGRect(x:0, y:0, width:45, height:45))
+            resizeRenderImageView.layer.borderColor = UIColor.white.cgColor
+            resizeRenderImageView.layer.borderWidth = 3.0
+            resizeRenderImageView.contentMode = UIViewContentMode.scaleAspectFill
+            resizeRenderImageView.image = (annotation as? PhotoAnnotation)?.photo
+            
+            UIGraphicsBeginImageContext(resizeRenderImageView.frame.size)
+            resizeRenderImageView.layer.render(in: UIGraphicsGetCurrentContext()!)
+            //let thumbnail = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
             annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
             annotationView!.canShowCallout = true
-            annotationView!.leftCalloutAccessoryView = UIImageView(frame: CGRect(x:0, y:0, width: 50, height:50))
+            annotationView!.leftCalloutAccessoryView = resizeRenderImageView
         }
         
         let imageView = annotationView?.leftCalloutAccessoryView as! UIImageView
