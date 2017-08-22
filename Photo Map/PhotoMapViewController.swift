@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, LocationsViewControllerDelegate {
+class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, LocationsViewControllerDelegate, MKMapViewDelegate {
 
     //outlets
     @IBOutlet weak var mapView: MKMapView!
@@ -36,6 +36,9 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
         photoButton.frame = CGRect(x: 153, y: 540, width: 80, height: 80)
         photoButton.layer.cornerRadius = 0.5 * photoButton.bounds.size.width
         photoButton.clipsToBounds = true
+        
+        //for photo annotation on pins
+        mapView.delegate = self
     }
 
     
@@ -88,6 +91,25 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
         let point = MapPoint(title: "\(latitude)", coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude)))
         
         mapView.addAnnotation(point)
+    }
+    
+    
+    //function for adding the image annotation to mapview
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let reuseID = "myAnnotationView"
+        
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseID)
+        if (annotationView == nil) {
+            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
+            annotationView!.canShowCallout = true
+            annotationView!.leftCalloutAccessoryView = UIImageView(frame: CGRect(x:0, y:0, width: 50, height:50))
+        }
+        
+        let imageView = annotationView?.leftCalloutAccessoryView as! UIImageView
+        // Add the image you stored from the image picker
+        imageView.image = pickedImage
+        
+        return annotationView
     }
     
     
