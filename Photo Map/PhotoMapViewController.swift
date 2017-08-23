@@ -117,7 +117,10 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
             annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
             annotationView!.canShowCallout = true
             annotationView!.leftCalloutAccessoryView = resizeRenderImageView
-            annotationView!.rightCalloutAccessoryView = UIButton(type: UIButtonType.detailDisclosure)
+            //setting action listener
+            let detailDisclosure = UIButton(type: UIButtonType.detailDisclosure)
+            detailDisclosure.addTarget(self, action: #selector(self.displayDetails), for: .touchUpInside)
+            annotationView!.rightCalloutAccessoryView = detailDisclosure
         }
         
         let imageView = annotationView?.leftCalloutAccessoryView as! UIImageView
@@ -128,10 +131,22 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     
+    //action method for detailDisclosure
+    func displayDetails() {
+        self.performSegue(withIdentifier: "fullImageSegue", sender: nil)
+    }
+    
+    
     //Segue preparation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let locationsViewController = segue.destination as! LocationsViewController
-        locationsViewController.delegate = self
+        if segue.identifier == "tagSegue" {
+            let locationsViewController = segue.destination as! LocationsViewController
+            locationsViewController.delegate = self
+        }
+        else if segue.identifier == "fullImageSegue" {
+            let fullImageViewController = segue.destination as! FullImageViewController
+            fullImageViewController.passedImage = pickedImage
+        }
     }
     
 
