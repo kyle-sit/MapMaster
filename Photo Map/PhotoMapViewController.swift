@@ -110,14 +110,14 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
             
             UIGraphicsBeginImageContext(resizeRenderImageView.frame.size)
             resizeRenderImageView.layer.render(in: UIGraphicsGetCurrentContext()!)
-            let thumbnail = UIGraphicsGetImageFromCurrentImageContext()
+            //let thumbnail = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             
             //get the annotationView
-            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
+            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
             
             //set pin to the image
-            annotationView!.image = thumbnail
+            //annotationView!.image = thumbnail
             //attach the imageview to the annotationView
             annotationView!.canShowCallout = true
             annotationView!.leftCalloutAccessoryView = resizeRenderImageView
