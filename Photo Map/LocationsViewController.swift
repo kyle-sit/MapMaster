@@ -64,8 +64,9 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
 
         let lat = venue.value(forKeyPath: "location.lat") as! NSNumber
         let lng = venue.value(forKeyPath: "location.lng") as! NSNumber
+        let title = venue.value(forKeyPath: "name") as! String
         
-        delegate.locationsPickedLocation(controller: self, latitude: lat, longitude: lng)
+        delegate.locationsPickedLocation(controller: self, latitude: lat, longitude: lng, title: title)
         
         // Return to the PhotoMapViewController
         navigationController?.popViewController(animated: true)
@@ -120,5 +121,5 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
 
 // Protocol definition to communicate back to photomap viewcontroller
 protocol LocationsViewControllerDelegate : class {
-    func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber)
+    func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber, title: String)
 }

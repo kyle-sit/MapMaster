@@ -87,9 +87,9 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
     
 
     //method implementation for protocol
-    func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber) {
+    func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber, title: String) {
         
-        let point = MapPoint(title: "\(latitude)", photo: pickedImage, coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude)))
+        let point = MapPoint(title: title, photo: pickedImage, coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude)))
         
         mapView.addAnnotation(point)
     }
@@ -110,11 +110,15 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
             
             UIGraphicsBeginImageContext(resizeRenderImageView.frame.size)
             resizeRenderImageView.layer.render(in: UIGraphicsGetCurrentContext()!)
-            //let thumbnail = UIGraphicsGetImageFromCurrentImageContext()
+            let thumbnail = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             
+            //get the annotationView
+            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
+            
+            //set pin to the image
+            annotationView!.image = thumbnail
             //attach the imageview to the annotationView
-            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
             annotationView!.canShowCallout = true
             annotationView!.leftCalloutAccessoryView = resizeRenderImageView
             let detailDisclosure = UIButton(type: UIButtonType.detailDisclosure)
@@ -122,6 +126,7 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
         }
         
         let imageView = annotationView?.leftCalloutAccessoryView as! UIImageView
+
         // Add the image you stored from the image picker
         imageView.image = pickedImage
         
